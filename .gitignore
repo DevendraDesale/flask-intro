@@ -1,0 +1,4 @@
+# Viretual environment folder
+venv
+# Pythong precompiled files.
+*.pyc

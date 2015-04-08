@@ -1,7 +1,8 @@
 from flask import Flask, render_template, request, redirect, \
-    url_for, session, flash, g
+    url_for, session, flash
+from flask.ext.sqlalchemy import SQLAlchemy
 from functools import wraps
-import sqlite3
+
 
 app = Flask(__name__)
 
@@ -11,7 +12,16 @@ app = Flask(__name__)
 app.secret_key = 'my precious'
 
 # Configuration fo the sequel lite 3
-app.database = "sample.db"
+# app.database = "sample.db"
+# Configuring the database to be dealt through alchemy
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///posts.db'
+
+
+# Create the alchemy
+db = SQLAlchemy(app)
+
+# Import model after the database is created, hence not topmost post
+from models import *
 
 
 # Use login required decorator
@@ -35,10 +45,13 @@ def home():
     # Remove the string and get the index page now.
     # return "Hello, world!"
     # g is specific to flask which store temporory object.
-    g.db = connect_db()
-    cur = g.db.execute('select * from  posts')
-    posts = [dict(title=row[0], description=row[1]) for row in cur.fetchall()]
-    g.db.close()
+    # g.db = connect_db()
+    #     cur = g.db.execute('select * from  posts')
+    # posts = [dict(title=row[0], description=row[1]) \
+    # for row in cur.fetchall()]
+    # g.db.close()
+    # Switching to the alchemy
+    posts = db.session.query(BlogPost).all()
     return render_template("index.html", posts=posts)
 
 
@@ -68,12 +81,12 @@ def logout():
     flash('You have just logged out!')
     return redirect(url_for('welcome'))
 
-
-def connect_db():
-    """
-    Getting the sqlite3 DB connection
-    """
-    return sqlite3.connect(app.database)
+# Commenting out the sqlite code will be migrating to the alchemy
+# def connect_db():
+#     """
+#     Getting the sqlite3 DB connection
+#     """
+#     return sqlite3.connect(app.database)
 
 
 if __name__ == '__main__':
