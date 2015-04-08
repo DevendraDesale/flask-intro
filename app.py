@@ -51,7 +51,11 @@ def home():
     # for row in cur.fetchall()]
     # g.db.close()
     # Switching to the alchemy
-    posts = db.session.query(BlogPost).all()
+    posts = []
+    try:
+        posts = db.session.query(BlogPost).all()
+    except:
+        flash("You have no datatbase")
     return render_template("index.html", posts=posts)
 
 
