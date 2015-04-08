@@ -2,3 +2,4 @@
 venv
 # Pythong precompiled files.
 *.pyc
+*.db
