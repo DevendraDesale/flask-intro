@@ -1,5 +1,8 @@
 from app import db
 
+from sqlalchemy import ForeignKey
+from sqlalchemy.orm import relationship
+
 
 class BlogPost(db.Model):
     """
@@ -10,10 +13,34 @@ class BlogPost(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String, nullable=False)
     description = db.Column(db.String, nullable=True)
+    # Define the one to many relationship with the author
+    # one author -> many posts.
+    author_id = db.Column(db.Integer, ForeignKey('users.id'))
 
     def __init__(self, title, description):
         self.title = title
         self.description = description
 
     def __repr__(self):
-        return '{}-{}'.format(self.title,self.description)
+        return '{}-{}'.format(self.title, self.description)
+
+
+class User(db.Model):
+    """
+    Creating user object who will be logging into the site.
+    """
+    __tablename__ = "users"
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, nullable=False)
+    email = db.Column(db.String, nullable=False)
+    password = db.Column(db.String, nullable=False)
+    posts = relationship("BlogPost", backref="author")
+
+    def __init__(self, name, email, password):
+        self.name = name
+        self.email = email
+        self.password = password
+
+    def __repr__(self):
+        return "<name {}".format(self.name)
