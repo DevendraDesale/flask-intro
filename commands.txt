@@ -1,0 +1,9 @@
+# setting up the postgres database.
+export DATABASE_URL='postgresql://localhost/discover_flask_dev'
+# setting up
+export APP_SETTINGS='config.DevelopmentConfig'
+
+
+# Setting up heroku
+heroku config:set APP_SETTINGS=config.ProductionConfig --remote heroku
+
