@@ -3,3 +3,6 @@ venv
 # Pythong precompiled files.
 *.pyc
 *.db
+
+# System files
+.DS_Store
