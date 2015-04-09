@@ -2,20 +2,27 @@ from flask import Flask, render_template, request, redirect, \
     url_for, session, flash
 from flask.ext.sqlalchemy import SQLAlchemy
 from functools import wraps
+import os
 
-
+# create the application object
 app = Flask(__name__)
 
+# Config the application object
+# app.config.from_object('config.DevelopmentConfig')
+# For the environments to be detected on the fly,
+# Change the way configs are imported
+app.config.from_object(os.environ['APP_SETTINGS'])
+print os.environ['APP_SETTINGS']
 
 # This shouldn't be in actual environemnt find better ways.
 # Use random key generator and then use sessions.
-app.secret_key = 'my precious'
-
+# app.secret_key = 'my precious'
+# Now we are switching to the main config file
 # Configuration fo the sequel lite 3
 # app.database = "sample.db"
 # Configuring the database to be dealt through alchemy
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///posts.db'
-
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///posts.db'
+# Now we are switching to the main config file
 
 # Create the alchemy
 db = SQLAlchemy(app)
@@ -94,4 +101,6 @@ def logout():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    # app.run(debug=True)
+    # Now we are switching to the main config file
+    app.run()
