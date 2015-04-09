@@ -12,7 +12,7 @@ app = Flask(__name__)
 # For the environments to be detected on the fly,
 # Change the way configs are imported
 app.config.from_object(os.environ['APP_SETTINGS'])
-print os.environ['APP_SETTINGS']
+# print os.environ['APP_SETTINGS']
 
 # This shouldn't be in actual environemnt find better ways.
 # Use random key generator and then use sessions.
